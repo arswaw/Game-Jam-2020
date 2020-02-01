@@ -2,10 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Learn Game Development at Zenva.com</title>
+    <title>Global Game Jam 2020</title>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.2.1/dist/phaser.js"></script>
 </head>
 <body>
+    <h4>Created by Alex Otten.</h4>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.dev.js"></script>
+<script type="text/javascript">
+    const socket = io();
+    
+    socket.on('move', msg => {
+        console.info("This is coming FROM the server", msg)
+    })
+</script>
 <script src="js/game.js"></script>
+
 </body>
 </html>

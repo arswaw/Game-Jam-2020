@@ -1,7 +1,7 @@
 // create a new scene named "Game"
 /* global Phaser */
 // create a new scene named "Game"
-let gameScene = new Phaser.Scene('Game');
+const gameScene = new Phaser.Scene('Game');
 
 
 // some parameters for our scene
@@ -10,6 +10,7 @@ gameScene.init = function() {
   this.enemySpeed = 2;
   this.enemyMaxY = 280;
   this.enemyMinY = 80;
+  this.serverMouseDown = false;
 }
 
 // load asset files for our game
@@ -26,7 +27,7 @@ gameScene.preload = function() {
 gameScene.create = function() {
 
   // background
-  let bg = this.add.sprite(0, 0, 'background');
+  const bg = this.add.sprite(0, 0, 'background');
 
   // change origin to the top-left of the sprite
   bg.setOrigin(0, 0);
@@ -77,7 +78,7 @@ gameScene.update = function() {
   }
 
   // check for active input
-  if (this.input.activePointer.isDown) {
+  if (this.input.activePointer.isDown || this.serverMouseDown) {
 
     // player walks
     this.player.x += this.playerSpeed;
@@ -89,10 +90,10 @@ gameScene.update = function() {
   }
 
   // enemy movement and collision
-  let enemies = this.enemies.getChildren();
-  let numEnemies = enemies.length;
+  const enemies = this.enemies.getChildren();
+  const numEnemies = enemies.length;
 
-  for (let i = 0; i < numEnemies; i++) {
+  for (var i = 0; i < numEnemies; i++) {
 
     // move enemies
     enemies[i].y += enemies[i].speed;
@@ -111,6 +112,17 @@ gameScene.update = function() {
     }
   }
 };
+
+  
+socket.on('onMouseDown', msg => {
+        console.info("moving forward")
+        gameScene.serverMouseDown = true
+  })
+  
+socket.on('onMouseUp', msg => {
+        console.info("stopped")
+        gameScene.serverMouseDown = false
+  })
 
 gameScene.gameOver = function() {
 
@@ -134,7 +146,7 @@ gameScene.gameOver = function() {
 
 
 // our game's configuration
-let config = {
+const config = {
   type: Phaser.AUTO,
   width: 640,
   height: 360,
@@ -142,5 +154,5 @@ let config = {
 };
 
 // create the game, and pass it the configuration
-let game = new Phaser.Game(config);
+const game = new Phaser.Game(config);
 
